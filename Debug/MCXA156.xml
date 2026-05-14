@@ -1,0 +1,5 @@
+<directory>
+ <chips chipVendor='NXP' >
+  <chip name='MCXA156' xml_file='MCXA156_part.xml' />
+ </chips>
+</directory> 
