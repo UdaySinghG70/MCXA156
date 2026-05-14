@@ -6,7 +6,7 @@
  * Generated linker script file for MCXA156
  * Created from linkscript.ldt by FMCreateLinkLibraries
  * Using Freemarker v2.3.30
- * MCUXpresso IDE v25.6 [Build 136] [2025-06-27] on May 14, 2026, 4:32:20 PM
+ * MCUXpresso IDE v25.6 [Build 136] [2025-06-27] on May 14, 2026, 5:08:34 PM
  */
 
 INCLUDE "MCXA156_Potentiometer_Debug_library.ld"
