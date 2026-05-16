@@ -18,6 +18,10 @@
    </preferences>
    <tools>
       <pins name="Pins" version="17.0" enabled="true" update_project_code="true">
+         <generated_project_files>
+            <file path="pin_mux.c" update_enabled="true"/>
+            <file path="pin_mux.h" update_enabled="true"/>
+         </generated_project_files>
          <pins_profile>
             <processor_version>25.06.10</processor_version>
          </pins_profile>
@@ -31,6 +35,11 @@
                </options>
                <dependencies>
                   <dependency resourceType="Peripheral" resourceId="LPUART0" description="Peripheral LPUART0 signals are routed in the Pins Tool, but the peripheral is not initialized in the Peripherals Tool." problem_level="1" source="Pins:BOARD_InitPins">
+                     <feature name="initialized" evaluation="equal">
+                        <data>true</data>
+                     </feature>
+                  </dependency>
+                  <dependency resourceType="Peripheral" resourceId="ADC1" description="Peripheral ADC1 signals are routed in the Pins Tool, but the peripheral is not initialized in the Peripherals Tool." problem_level="1" source="Pins:BOARD_InitPins">
                      <feature name="initialized" evaluation="equal">
                         <data>true</data>
                      </feature>
@@ -69,11 +78,16 @@
                         <pin_feature name="invert_input" value="normal"/>
                      </pin_features>
                   </pin>
+                  <pin peripheral="ADC1" signal="A, 8" pin_num="3" pin_signal="P1_10/LPUART1_RTS_B/LPI2C2_SDAS/CT2_MAT0/FLEXIO0_D18"/>
                </pins>
             </function>
          </functions_list>
       </pins>
       <clocks name="Clocks" version="17.0" enabled="true" update_project_code="true">
+         <generated_project_files>
+            <file path="clock_config.c" update_enabled="true"/>
+            <file path="clock_config.h" update_enabled="true"/>
+         </generated_project_files>
          <clocks_profile>
             <processor_version>25.06.10</processor_version>
          </clocks_profile>
@@ -310,6 +324,7 @@
          <dcdx_configurations/>
       </dcdx>
       <periphs name="Peripherals" version="15.0" enabled="false" update_project_code="true">
+         <generated_project_files/>
          <peripherals_profile>
             <processor_version>N/A</processor_version>
          </peripherals_profile>
