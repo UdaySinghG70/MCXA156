@@ -1,5 +1,5 @@
 /*
- * Copyright 2023, NXP
+ * Copyright 2025, NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -51,7 +51,7 @@ void RESET_SetPeripheralReset(reset_ip_name_t peripheral)
     }
 
     assert(bitPos < 32u);
-    assert(regIndex < 2u);
+    assert(regIndex < 3u);
 
     /* Unlock clock configuration */
     SYSCON->CLKUNLOCK &= ~SYSCON_CLKUNLOCK_UNLOCK_MASK;
@@ -68,10 +68,15 @@ void RESET_SetPeripheralReset(reset_ip_name_t peripheral)
         MRCC0->MRCC_GLB_RST1_SET = bitMask;
         pResetCtrl               = &(MRCC0->MRCC_GLB_RST1);
     }
+    else if (regIndex == 2U)
+    {
+        MRCC0->MRCC_GLB_RST2_SET = bitMask;
+        pResetCtrl               = &(MRCC0->MRCC_GLB_RST2);
+    }
     else
     {
-     /* Added comments to prevent the violation of MISRA C-2012 rule 15.7 */
-    } 
+        /* Added comments to prevent the violation of MISRA C-2012 rule 15.7 */
+    }
     /* wait until it reads 0b1 */
     while (0u == ((*pResetCtrl) & bitMask))
     {
@@ -97,6 +102,7 @@ void RESET_ClearPeripheralReset(reset_ip_name_t peripheral)
     volatile uint32_t *pResetCtrl = &(MRCC0->MRCC_GLB_RST0);
 
     assert(bitPos < 32u);
+    assert(regIndex < 3u);
 
     /* Unlock clock configuration */
     SYSCON->CLKUNLOCK &= ~SYSCON_CLKUNLOCK_UNLOCK_MASK;
@@ -113,10 +119,15 @@ void RESET_ClearPeripheralReset(reset_ip_name_t peripheral)
         MRCC0->MRCC_GLB_RST1_CLR = bitMask;
         pResetCtrl               = &(MRCC0->MRCC_GLB_RST1);
     }
+    else if (regIndex == 2U)
+    {
+        MRCC0->MRCC_GLB_RST2_CLR = bitMask;
+        pResetCtrl               = &(MRCC0->MRCC_GLB_RST2);
+    }
     else
     {
-     /* Added comments to prevent the violation of MISRA C-2012 rule 15.7 */
-    } 
+        /* Added comments to prevent the violation of MISRA C-2012 rule 15.7 */
+    }
     /* wait until it reads 0b0 */
     while (bitMask == ((*pResetCtrl) & bitMask))
     {

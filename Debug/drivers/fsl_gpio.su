@@ -1,5 +1,5 @@
-../drivers/fsl_clock.h:672:20:CLOCK_EnableClock	32	static
-../drivers/fsl_clock.h:710:20:CLOCK_DisableClock	32	static
+../drivers/fsl_clock.h:786:20:CLOCK_EnableClock	32	static
+../drivers/fsl_clock.h:824:20:CLOCK_DisableClock	32	static
 ../drivers/fsl_gpio.h:345:20:GPIO_PinWrite	24	static
 ../drivers/fsl_gpio.c:106:17:GPIO_GetInstance	24	static
 ../drivers/fsl_gpio.c:130:13:GPIO_PortClockEnable	24	static

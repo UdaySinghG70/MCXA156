@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -15,7 +15,7 @@
  * Definitions
  ******************************************************************************/
 /*! @brief The board name */
-#define BOARD_NAME "FRDM-MCXA156"
+#define BOARD_NAME "FRDM-MCXA266"
 /*! @brief The manufacturer name */
 #define MANUFACTURER_NAME "NXP"
 
@@ -27,34 +27,34 @@
 #define BOARD_DEBUG_UART_BAUDRATE 115200U
 #endif
 
-#define BOARD_DEBUG_UART_BASEADDR   (uint32_t) LPUART0
-#define BOARD_DEBUG_UART_INSTANCE   0U
-#define BOARD_DEBUG_UART_CLK_ATTACH kFRO12M_to_LPUART0
-#define BOARD_DEBUG_UART_RST        kLPUART0_RST_SHIFT_RSTn
-#define BOARD_DEBUG_UART_CLKSRC     kCLOCK_LPUART0
-#define BOARD_UART_IRQ_HANDLER      LPUART0_IRQHandler
-#define BOARD_UART_IRQ              LPUART0_IRQn
+#define BOARD_DEBUG_UART_BASEADDR   (uint32_t) LPUART2
+#define BOARD_DEBUG_UART_INSTANCE   2U
+#define BOARD_DEBUG_UART_CLK_ATTACH kFRO_LF_DIV_to_LPUART2
+#define BOARD_DEBUG_UART_RST        kLPUART2_RST_SHIFT_RSTn
+#define BOARD_DEBUG_UART_CLKSRC     kCLOCK_LPUART2
+#define BOARD_UART_IRQ_HANDLER      LPUART2_IRQHandler
+#define BOARD_UART_IRQ              LPUART2_IRQn
 
 /*! @brief GPIO for LED. */
 #ifndef BOARD_LED_RED_GPIO
 #define BOARD_LED_RED_GPIO GPIO3
 #endif
 #ifndef BOARD_LED_RED_GPIO_PIN
-#define BOARD_LED_RED_GPIO_PIN 12U
+#define BOARD_LED_RED_GPIO_PIN 18U
 #endif
 
 #ifndef BOARD_LED_GREEN_GPIO
 #define BOARD_LED_GREEN_GPIO GPIO3
 #endif
 #ifndef BOARD_LED_GREEN_GPIO_PIN
-#define BOARD_LED_GREEN_GPIO_PIN 13U
+#define BOARD_LED_GREEN_GPIO_PIN 19U
 #endif
 
 #ifndef BOARD_LED_BLUE_GPIO
 #define BOARD_LED_BLUE_GPIO GPIO3
 #endif
 #ifndef BOARD_LED_BLUE_GPIO_PIN
-#define BOARD_LED_BLUE_GPIO_PIN 0U
+#define BOARD_LED_BLUE_GPIO_PIN 21U
 #endif
 
 /*! @brief GPIO for SW. */
@@ -81,6 +81,11 @@
 /* Board LED color mapping */
 #define LOGIC_LED_ON  0U
 #define LOGIC_LED_OFF 1U
+
+/* Camera */
+#define BOARD_CAMERA_I2C_BASEADDR   LPI2C2
+#define BOARD_CAMERA_I2C_INSTANCE   2U
+#define BOARD_CAMERA_I2C_CLOCK_FREQ CLOCK_GetLpi2cClkFreq(BOARD_CAMERA_I2C_INSTANCE)
 
 #define LED_RED_INIT(output)                                           \
     GPIO_PinWrite(BOARD_LED_RED_GPIO, BOARD_LED_RED_GPIO_PIN, output); \
@@ -112,6 +117,10 @@
 #define LED_BLUE_TOGGLE() \
     GPIO_PortToggle(BOARD_LED_BLUE_GPIO, 1U << BOARD_LED_BLUE_GPIO_PIN)       /*!< Toggle on target LED_BLUE */
 
+#if defined(__cplusplus)
+extern "C" {
+#endif /* __cplusplus */
+
 /*******************************************************************************
  * API
  ******************************************************************************/
@@ -131,6 +140,15 @@ status_t BOARD_LPI2C_Receive(LPI2C_Type *base,
                              uint8_t subaddressSize,
                              uint8_t *rxBuff,
                              uint8_t rxBuffSize);
+void BOARD_Camera_I2C_Init(void);
+status_t BOARD_Camera_I2C_SendSCCB(
+    uint8_t deviceAddress, uint32_t subAddress, uint8_t subAddressSize, const uint8_t *txBuff, uint8_t txBuffSize);
+status_t BOARD_Camera_I2C_ReceiveSCCB(
+    uint8_t deviceAddress, uint32_t subAddress, uint8_t subAddressSize, uint8_t *rxBuff, uint8_t rxBuffSize);
 #endif /* SDK_I2C_BASED_COMPONENT_USED */
+
+#if defined(__cplusplus)
+}
+#endif /* __cplusplus */
 
 #endif /* _BOARD_H_ */

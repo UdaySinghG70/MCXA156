@@ -1,7 +1,7 @@
-C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA156_Potentiometer\CMSIS/core_cm33.h:2358:22:__NVIC_EnableIRQ	16	static
-../drivers/fsl_clock.h:672:20:CLOCK_EnableClock	32	static
-../drivers/fsl_clock.h:710:20:CLOCK_DisableClock	32	static
-../drivers/fsl_reset.h:240:20:RESET_ReleasePeripheralReset	16	static
+C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\CMSIS/core_cm33.h:2358:22:__NVIC_EnableIRQ	16	static
+../drivers/fsl_clock.h:786:20:CLOCK_EnableClock	32	static
+../drivers/fsl_clock.h:824:20:CLOCK_DisableClock	32	static
+../drivers/fsl_reset.h:302:20:RESET_ReleasePeripheralReset	16	static
 ../drivers/fsl_common_arm.h:714:24:EnableIRQ	24	static
 ../drivers/fsl_common_arm.h:944:24:DisableGlobalIRQ	16	static
 ../drivers/fsl_common_arm.h:970:20:EnableGlobalIRQ	24	static
@@ -50,3 +50,4 @@ C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA156_Potentiometer\CMSIS/cor
 ../drivers/fsl_lpuart.c:2449:6:LPUART2_DriverIRQHandler	8	static
 ../drivers/fsl_lpuart.c:2473:6:LPUART3_DriverIRQHandler	8	static
 ../drivers/fsl_lpuart.c:2497:6:LPUART4_DriverIRQHandler	8	static
+../drivers/fsl_lpuart.c:2521:6:LPUART5_DriverIRQHandler	8	static

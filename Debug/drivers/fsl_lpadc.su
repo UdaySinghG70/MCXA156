@@ -1,6 +1,6 @@
-../drivers/fsl_clock.h:672:20:CLOCK_EnableClock	32	static
-../drivers/fsl_clock.h:710:20:CLOCK_DisableClock	32	static
-../drivers/fsl_reset.h:240:20:RESET_ReleasePeripheralReset	16	static
+../drivers/fsl_clock.h:786:20:CLOCK_EnableClock	32	static
+../drivers/fsl_clock.h:824:20:CLOCK_DisableClock	32	static
+../drivers/fsl_reset.h:302:20:RESET_ReleasePeripheralReset	16	static
 ../drivers/fsl_lpadc.h:805:20:LPADC_Enable	16	static
 ../drivers/fsl_lpadc.h:847:20:LPADC_DoResetFIFO	16	static
 ../drivers/fsl_lpadc.h:860:20:LPADC_DoResetConfig	16	static

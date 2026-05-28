@@ -33,7 +33,7 @@ $(wildcard ../makefile.init) \
 $(wildcard ../makefile.targets) \
 
 
-BUILD_ARTIFACT_NAME := MCXA156_Potentiometer
+BUILD_ARTIFACT_NAME := MCXA266
 BUILD_ARTIFACT_EXTENSION := axf
 BUILD_ARTIFACT_PREFIX :=
 BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ARTIFACT_EXTENSION),.$(BUILD_ARTIFACT_EXTENSION),)
@@ -45,24 +45,24 @@ all:
 	+@$(MAKE) --no-print-directory main-build && $(MAKE) --no-print-directory post-build
 
 # Main-build Target
-main-build: MCXA156_Potentiometer.axf
+main-build: MCXA266.axf
 
 # Tool invocations
-MCXA156_Potentiometer.axf: $(OBJS) $(USER_OBJS) makefile $(OPTIONAL_TOOL_DEPS)
+MCXA266.axf: $(OBJS) $(USER_OBJS) makefile $(OPTIONAL_TOOL_DEPS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: MCU Linker'
-	arm-none-eabi-gcc -nostdlib -Xlinker -Map="MCXA156_Potentiometer.map" -Xlinker --gc-sections -Xlinker -print-memory-usage -Xlinker --sort-section=alignment -Xlinker --cref -mcpu=cortex-m33 -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -T MCXA156_Potentiometer_Debug.ld -o "MCXA156_Potentiometer.axf" $(OBJS) $(USER_OBJS) $(LIBS)
+	arm-none-eabi-gcc -nostdlib -Xlinker -Map="MCXA266.map" -Xlinker --gc-sections -Xlinker -print-memory-usage -Xlinker --sort-section=alignment -Xlinker --cref -mcpu=cortex-m33 -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -T MCXA266_Debug.ld -o "MCXA266.axf" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) MCXA156_Potentiometer.axf
+	-$(RM) MCXA266.axf
 	-@echo ' '
 
 post-build:
 	-@echo 'Performing post-build steps'
-	-arm-none-eabi-size "MCXA156_Potentiometer.axf"; # arm-none-eabi-objcopy -v -O binary "MCXA156_Potentiometer.axf" "MCXA156_Potentiometer.bin" ; # checksum -p MCXA156 -d "MCXA156_Potentiometer.bin";
+	-arm-none-eabi-size "MCXA266.axf"; # arm-none-eabi-objcopy -v -O binary "MCXA266.axf" "MCXA266.bin" ; # checksum -p MCXA266 -d "MCXA266.bin";
 	-@echo ' '
 
 .PHONY: all clean dependents main-build post-build
