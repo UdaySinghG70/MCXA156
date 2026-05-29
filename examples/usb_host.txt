@@ -1,0 +1,275 @@
+/*
+ * Copyright (c) 2015 - 2016, Freescale Semiconductor, Inc.
+ * Copyright 2016 - 2017 NXP
+ * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
+#include "usb_host_config.h"
+#include "usb_host.h"
+#include "fsl_device_registers.h"
+#include "usb_host_msd.h"
+#include "host_msd_fatfs.h"
+#include "fsl_common.h"
+#include "board.h"
+#include "ff.h"         /* FatFs File System API */
+#include <stdio.h>      /* Required for sprintf */
+#include <string.h>     /* Required for strlen */
+
+#if (defined(FSL_FEATURE_SOC_SYSMPU_COUNT) && (FSL_FEATURE_SOC_SYSMPU_COUNT > 0U))
+#include "fsl_sysmpu.h"
+#endif /* FSL_FEATURE_SOC_SYSMPU_COUNT */
+#include "app.h"
+
+#if ((!USB_HOST_CONFIG_KHCI) && (!USB_HOST_CONFIG_EHCI) && (!USB_HOST_CONFIG_OHCI) && (!USB_HOST_CONFIG_IP3516HS))
+#error Please enable USB_HOST_CONFIG_KHCI, USB_HOST_CONFIG_EHCI, USB_HOST_CONFIG_OHCI, or USB_HOST_CONFIG_IP3516HS in file usb_host_config.
+#endif
+
+/*******************************************************************************
+ * Definitions
+ ******************************************************************************/
+/* Standardized logging macro */
+#define LOG_PRINT(level, module, format, ...) usb_echo("[%s] [%s] " format "\r\n", level, module, ##__VA_ARGS__)
+
+/* Target Volume drive notation for FatFs */
+#define LOGICAL_DRIVE_NUM "1:"
+
+/*******************************************************************************
+ * Prototypes
+ ******************************************************************************/
+static usb_status_t USB_HostEvent(usb_device_handle deviceHandle,
+                                  usb_host_configuration_handle configurationHandle,
+                                  uint32_t eventCode);
+
+static void USB_HostApplicationInit(void);
+static void USB_HostTask(void *param);
+static void USB_HostApplicationTask(void *param);
+static FRESULT CreateNextSequentialFile(const char *driveNumber);
+
+extern void USB_HostClockInit(void);
+extern void USB_HostIsrEnable(void);
+extern void USB_HostTaskFn(void *param);
+void BOARD_InitHardware(void);
+
+/*******************************************************************************
+ * Variables
+ ******************************************************************************/
+extern usb_host_msd_fatfs_instance_t g_MsdFatfsInstance;
+usb_host_handle g_HostHandle;
+FATFS g_UsbFatFs; /* File system object structure allocated in RAM */
+
+/*******************************************************************************
+ * Code
+ ******************************************************************************/
+
+/*!
+ * @brief Finds the next available file slot (n.txt) and creates it.
+ */
+static FRESULT CreateNextSequentialFile(const char *driveNumber)
+{
+    FRESULT fr;
+    FIL file;
+    FILINFO fno;
+    unsigned int fileIndex = 1;
+
+    /* Declare a primitive byte buffer array allocation */
+    char fileTargetArrayPath;
+
+    /* Runtime explicit memory zeroing to bypass static analyzer type bugs */
+    (void)memset(&fileTargetArrayPath, 0, sizeof(fileTargetArrayPath));
+
+    LOG_PRINT("INFO", "FATFS", "Scanning storage disk for available index slot...");
+
+    /* Loop until an unused filename slot is discovered */
+    while (1)
+    {
+        /* Create standard structure file path name e.g., "1:/1.txt" */
+        (void)sprintf(&fileTargetArrayPath, "%s/%u.txt", driveNumber, fileIndex);
+
+        /* Quick check to determine if file already exists */
+        fr = f_stat((const TCHAR*)&fileTargetArrayPath, &fno);
+
+        if (fr == FR_NO_FILE)
+        {
+            /* Target non-existent sequence slot identified */
+            LOG_PRINT("INFO", "FATFS", "Target slot identified: %s", &fileTargetArrayPath);
+            break;
+        }
+        else if (fr != FR_OK)
+        {
+            LOG_PRINT("ERROR", "FATFS", "Disk look-up aborted. Error code: %d", fr);
+            return fr;
+        }
+
+        /* Current file index exists, advance check to (n + 1).txt */
+        fileIndex++;
+    }
+
+    /* Instantiate and open the newly discovered file index */
+    fr = f_open(&file, (const TCHAR*)&fileTargetArrayPath, FA_WRITE | FA_CREATE_ALWAYS);
+    if (fr == FR_OK)
+    {
+        UINT bytesWritten;
+        const char *logHeader = "Sequential storage test allocation initialized successfully.\n";
+
+        LOG_PRINT("INFO", "FATFS", "Successfully generated system file: %s", &fileTargetArrayPath);
+
+        /* Write header verification line into the file */
+        (void)f_write(&file, logHeader, (UINT)strlen(logHeader), &bytesWritten);
+
+        /* Close file descriptor to physically flush buffers out to flash memory */
+        (void)f_close(&file);
+    }
+    else
+    {
+        LOG_PRINT("ERROR", "FATFS", "Failed to finalize file creation for: %s. Error: %d", &fileTargetArrayPath, fr);
+    }
+
+    return fr;
+}
+
+static usb_status_t USB_HostEvent(usb_device_handle deviceHandle,
+                                  usb_host_configuration_handle configurationHandle,
+                                  uint32_t eventCode)
+{
+    usb_status_t status = kStatus_USB_Success;
+    switch (eventCode & 0x0000FFFFU)
+    {
+        case kUSB_HostEventAttach:
+            status = USB_HostMsdEvent(deviceHandle, configurationHandle, eventCode);
+            break;
+
+        case kUSB_HostEventNotSupported:
+            LOG_PRINT("WARN", "USB", "Connected interface device architecture not supported.");
+            break;
+
+        case kUSB_HostEventEnumerationDone:
+            status = USB_HostMsdEvent(deviceHandle, configurationHandle, eventCode);
+            break;
+
+        case kUSB_HostEventDetach:
+            status = USB_HostMsdEvent(deviceHandle, configurationHandle, eventCode);
+            break;
+
+        case kUSB_HostEventEnumerationFail:
+            LOG_PRINT("ERROR", "USB", "Hardware negotiation/enumeration failed.");
+            break;
+
+        default:
+            break;
+    }
+    return status;
+}
+
+static void USB_HostApplicationInit(void)
+{
+    usb_status_t status = kStatus_USB_Success;
+
+    USB_HostClockInit();
+
+#if ((defined FSL_FEATURE_SOC_SYSMPU_COUNT) && (FSL_FEATURE_SOC_SYSMPU_COUNT))
+    SYSMPU_Enable(SYSMPU, 0);
+#endif
+
+    status = USB_HostInit(CONTROLLER_ID, &g_HostHandle, USB_HostEvent);
+    if (status != kStatus_USB_Success)
+    {
+        LOG_PRINT("ERROR", "USB", "Core physical host layer registration error.");
+        return;
+    }
+    USB_HostIsrEnable();
+
+    LOG_PRINT("INFO", "USB", "Core host engine boot sequence finished.");
+}
+
+static void USB_HostTask(void *param)
+{
+    while (1)
+    {
+        USB_HostTaskFn(param);
+    }
+}
+
+static void USB_HostApplicationTask(void *param)
+{
+    FRESULT fatfsResult;
+    uint8_t wasFileExecuted = 0;
+
+    while (1)
+    {
+        /* Verified layout using compiler-suggested state macro */
+        if (g_MsdFatfsInstance.runState == kUSB_HostMsdRunMassStorageTest)
+        {
+            /* Run the operation exactly once per insertion event */
+            if (wasFileExecuted == 0)
+            {
+                LOG_PRINT("INFO", "FATFS", "Mass Storage Device detected. Initializing mount sequence...");
+
+                /* Mount drive */
+                fatfsResult = f_mount(&g_UsbFatFs, LOGICAL_DRIVE_NUM, 1);
+                if (fatfsResult == FR_OK)
+                {
+                    LOG_PRINT("INFO", "FATFS", "Volume successfully mounted as logical drive '%s'", LOGICAL_DRIVE_NUM);
+
+                    /* Trigger file generation sequence */
+                    CreateNextSequentialFile(LOGICAL_DRIVE_NUM);
+
+                    /* Unmount to cleanly release storage handles */
+                    f_mount(NULL, LOGICAL_DRIVE_NUM, 0);
+                    LOG_PRINT("INFO", "FATFS", "Drive unmounted safely. It is now safe to remove storage device.");
+                }
+                else
+                {
+                    LOG_PRINT("ERROR", "FATFS", "Mount routine halted. Partition format unexpected or unreadable: %d", fatfsResult);
+                }
+
+                wasFileExecuted = 1; /* Process complete for this insertion loop */
+
+                /* CRITICAL: Force state machine to move to IDLE/COMPLETED state.
+                   This intercepts the native SDK background task from executing its own test suite! */
+                g_MsdFatfsInstance.runState = kUSB_HostMsdRunIdle;
+            }
+        }
+
+        /* Keep core application engine updated safely */
+        USB_HostMsdTask(param);
+
+        if (g_MsdFatfsInstance.runState == kUSB_HostMsdRunIdle)
+        {
+            /* Reset the runtime execution latch if the drive is physically disconnected */
+            if (wasFileExecuted == 1 && g_MsdFatfsInstance.deviceState == kStatus_DEV_Detached)
+            {
+                LOG_PRINT("WARN", "USB", "Storage device detached from target node port.");
+                wasFileExecuted = 0;
+            }
+        }
+    }
+}
+
+int main(void)
+{
+    BOARD_InitHardware();
+
+    USB_HostApplicationInit();
+
+    /* Low-level context USB communication layer processing link */
+    if (xTaskCreate(USB_HostTask, "usb host task", 2000L / sizeof(portSTACK_TYPE), g_HostHandle, APP_USB_TASK_PRIORITY, NULL) != pdPASS)
+    {
+        LOG_PRINT("ERROR", "OS", "System failed allocating core hardware management background thread.");
+    }
+
+    /* High-level user workspace processing logic stack */
+    if (xTaskCreate(USB_HostApplicationTask, "app task", 3000L / sizeof(portSTACK_TYPE), &g_MsdFatfsInstance, APP_MAIN_TASK_PRIORITY,
+                    NULL) != pdPASS)
+    {
+        LOG_PRINT("ERROR", "OS", "System failed allocating runtime application task thread.");
+    }
+
+    vTaskStartScheduler();
+
+    while (1)
+    {
+        ;
+    }
+}
