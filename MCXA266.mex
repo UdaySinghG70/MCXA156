@@ -1139,10 +1139,50 @@
       <periphs name="Peripherals" version="15.0" enabled="false" update_project_code="true">
          <generated_project_files/>
          <peripherals_profile>
-            <processor_version>N/A</processor_version>
+            <processor_version>25.09.0</processor_version>
          </peripherals_profile>
-         <functional_groups/>
-         <components/>
+         <functional_groups>
+            <functional_group name="BOARD_InitPeripherals" uuid="9ac33be6-7f07-4cc1-8794-d0f7476167f5" called_from_default_init="true" id_prefix="" core="cm33_core0">
+               <description></description>
+               <options/>
+               <dependencies/>
+               <instances>
+                  <instance name="NVIC" uuid="1946521c-96cc-4837-a4c2-612a6de6204c" type="nvic" type_id="nvic" mode="general" peripheral="NVIC" enabled="true" comment="" custom_name_enabled="false" editing_lock="false">
+                     <config_set name="nvic">
+                        <array name="interrupt_table"/>
+                        <array name="interrupts"/>
+                     </config_set>
+                  </instance>
+               </instances>
+            </functional_group>
+         </functional_groups>
+         <components>
+            <component name="system" uuid="2bbea475-e6d1-41e5-8339-746c21f24f51" type_id="system">
+               <config_set_global name="global_system_definitions">
+                  <setting name="user_definitions" value=""/>
+                  <setting name="user_includes" value=""/>
+                  <setting name="global_init" value=""/>
+               </config_set_global>
+            </component>
+            <component name="uart_cmsis_common" uuid="c5caefb2-7640-4d1c-bab7-65b8af899142" type_id="uart_cmsis_common">
+               <config_set_global name="global_USART_CMSIS_common" quick_selection="default"/>
+            </component>
+            <component name="msg" uuid="001ee95c-517b-41d0-81dd-d280398658a1" type_id="msg">
+               <config_set_global name="global_messages"/>
+            </component>
+            <component name="gpio_adapter_common" uuid="4dbe8aa5-2021-4d65-971c-1324eb1a0298" type_id="gpio_adapter_common">
+               <config_set_global name="global_gpio_adapter_common" quick_selection="default"/>
+            </component>
+            <component name="generic_uart" uuid="ffb7b93b-c9d6-409c-ac9a-5774457b08ae" type_id="generic_uart">
+               <config_set_global name="global_uart"/>
+            </component>
+            <component name="generic_enet" uuid="2038a7c6-4792-4094-b2af-ce900cec0599" type_id="generic_enet">
+               <config_set_global name="global_enet"/>
+            </component>
+            <component name="generic_can" uuid="6cae3c80-0e2e-460d-96c9-20fe4a05ed6d" type_id="generic_can">
+               <config_set_global name="global_can"/>
+            </component>
+         </components>
       </periphs>
       <tee name="TEE" version="10.0" enabled="false" update_project_code="true">
          <generated_project_files/>

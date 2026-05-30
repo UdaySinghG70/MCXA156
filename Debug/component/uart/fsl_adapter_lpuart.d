@@ -65,7 +65,16 @@ component/uart/fsl_adapter_lpuart.o component/uart/fsl_adapter_lpuart.d: \
  C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\drivers/fsl_clock.h \
  C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\drivers/fsl_reset.h \
  ../component/uart/fsl_adapter_uart.h \
- C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\drivers/fsl_common.h
+ C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\drivers/fsl_common.h \
+ C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\freertos\freertos-kernel\include/FreeRTOS.h \
+ C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\freertos\freertos-kernel\template/FreeRTOSConfig.h \
+ C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\freertos\freertos-kernel\template\ARM_CM33_3_priority_bits/FreeRTOSConfig_Gen.h \
+ C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\freertos\freertos-kernel\include/projdefs.h \
+ C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\freertos\freertos-kernel\include/portable.h \
+ C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\freertos\freertos-kernel\include/deprecated_definitions.h \
+ C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\freertos\freertos-kernel\portable\GCC\ARM_CM33\non_secure/portmacro.h \
+ C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\freertos\freertos-kernel\portable\GCC\ARM_CM33\non_secure/portmacrocommon.h \
+ C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\freertos\freertos-kernel\include/mpu_wrappers.h
 C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\drivers/fsl_lpuart.h:
 C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\drivers/fsl_common.h:
 C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\device/fsl_device_registers.h:
@@ -132,3 +141,12 @@ C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\drivers/fsl_clock.h:
 C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\drivers/fsl_reset.h:
 ../component/uart/fsl_adapter_uart.h:
 C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\drivers/fsl_common.h:
+C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\freertos\freertos-kernel\include/FreeRTOS.h:
+C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\freertos\freertos-kernel\template/FreeRTOSConfig.h:
+C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\freertos\freertos-kernel\template\ARM_CM33_3_priority_bits/FreeRTOSConfig_Gen.h:
+C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\freertos\freertos-kernel\include/projdefs.h:
+C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\freertos\freertos-kernel\include/portable.h:
+C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\freertos\freertos-kernel\include/deprecated_definitions.h:
+C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\freertos\freertos-kernel\portable\GCC\ARM_CM33\non_secure/portmacro.h:
+C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\freertos\freertos-kernel\portable\GCC\ARM_CM33\non_secure/portmacrocommon.h:
+C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\freertos\freertos-kernel\include/mpu_wrappers.h:

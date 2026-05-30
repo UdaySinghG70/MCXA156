@@ -70,7 +70,21 @@ utilities/debug_console/fsl_debug_console.o \
  C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\component\serial_manager/fsl_component_serial_manager.h \
  C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\component\serial_manager/fsl_component_serial_port_uart.h \
  C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\component\uart/fsl_adapter_uart.h \
- ../utilities/debug_console/fsl_debug_console.h
+ C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\freertos\freertos-kernel\include/FreeRTOS.h \
+ C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\freertos\freertos-kernel\template/FreeRTOSConfig.h \
+ C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\freertos\freertos-kernel\template\ARM_CM33_3_priority_bits/FreeRTOSConfig_Gen.h \
+ C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\freertos\freertos-kernel\include/projdefs.h \
+ C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\freertos\freertos-kernel\include/portable.h \
+ C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\freertos\freertos-kernel\include/deprecated_definitions.h \
+ C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\freertos\freertos-kernel\portable\GCC\ARM_CM33\non_secure/portmacro.h \
+ C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\freertos\freertos-kernel\portable\GCC\ARM_CM33\non_secure/portmacrocommon.h \
+ C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\freertos\freertos-kernel\include/mpu_wrappers.h \
+ ../utilities/debug_console/fsl_debug_console.h \
+ C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\freertos\freertos-kernel\include/semphr.h \
+ C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\freertos\freertos-kernel\include/queue.h \
+ C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\freertos\freertos-kernel\include/task.h \
+ C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\freertos\freertos-kernel\include/list.h \
+ C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\freertos\freertos-kernel\include/task.h
 C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\utilities\debug_console\config/fsl_debug_console_conf.h:
 C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\drivers/fsl_common.h:
 C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\device/fsl_device_registers.h:
@@ -140,4 +154,18 @@ C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\utilities\str/fsl_str.h
 C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\component\serial_manager/fsl_component_serial_manager.h:
 C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\component\serial_manager/fsl_component_serial_port_uart.h:
 C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\component\uart/fsl_adapter_uart.h:
+C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\freertos\freertos-kernel\include/FreeRTOS.h:
+C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\freertos\freertos-kernel\template/FreeRTOSConfig.h:
+C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\freertos\freertos-kernel\template\ARM_CM33_3_priority_bits/FreeRTOSConfig_Gen.h:
+C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\freertos\freertos-kernel\include/projdefs.h:
+C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\freertos\freertos-kernel\include/portable.h:
+C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\freertos\freertos-kernel\include/deprecated_definitions.h:
+C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\freertos\freertos-kernel\portable\GCC\ARM_CM33\non_secure/portmacro.h:
+C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\freertos\freertos-kernel\portable\GCC\ARM_CM33\non_secure/portmacrocommon.h:
+C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\freertos\freertos-kernel\include/mpu_wrappers.h:
 ../utilities/debug_console/fsl_debug_console.h:
+C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\freertos\freertos-kernel\include/semphr.h:
+C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\freertos\freertos-kernel\include/queue.h:
+C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\freertos\freertos-kernel\include/task.h:
+C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\freertos\freertos-kernel\include/list.h:
+C:\Users\Desktop\Desktop\MCUXpressoIDE\workspace\MCXA266\freertos\freertos-kernel\include/task.h:
