@@ -119,6 +119,8 @@ void ClearAllBlinkFlags(void)
 {
 	BlinkFlags = 0;
 }
+
+//KEYPAD
 void ServiceKBD4X1(void)
 {
 	static unsigned char kbd_sm = 0;

@@ -124,10 +124,17 @@ int main(void)
     LCD_PrintStr("MCXA266",         LCD_ROW0_START);    /* Row 0: "MCXA266" */
     LCD_PrintStr("READY",           8u);                /* Row 0, col 8     */
     LCD_PrintStr("BARE METAL MODE", LCD_ROW1_START);    /* Row 1            */
+    LCD_PrintStr("HELLO world", LCD_ROW0_START);    /* Row 1            */
+
+
+    /* Place a visible character at the blink positions —
+     * blinking a space is invisible since blank and space look the same! */
+    LCD_SetChar('*', LCD_LAST_COL_ROW0);    /* pos 15: show '*' that blinks */
+    LCD_SetChar('*', LCD_LAST_COL_ROW1);    /* pos 31: show '*' that blinks */
 
     LCD_SetBlink(LCD_LAST_COL_ROW0);    /* blink last column of row 0 (pos 15) */
     LCD_SetBlink(LCD_LAST_COL_ROW1);    /* blink last column of row 1 (pos 31) */
-
+    LCD_SetBlink(30u);
     PRINTF("LCD text loaded\n");
 
     /* --- Step 4: Set up FreeRTOS heap (heap_5 needs this first) --------- */

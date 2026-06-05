@@ -159,21 +159,49 @@ static void lcd_write_data_pins(uint8_t byte)
 /**
  * @brief Send one byte to the LCD with the specified RS level.
  *
+ * This function performs a single 8-bit parallel transfer to the HD44780 LCD.
+ * It sets the RS line, places the data byte on D0–D7, then generates a short
+ * enable (E) pulse to latch the value into the LCD.
+ *
+ * The operation relies on CPU ordering guarantees rather than explicit delays.
+ * This is safe in this design because:
+ *  - GPIO writes may be buffered or reordered by the Cortex-M memory system
+ *  - the LCD requires stable data before the rising edge of E
+ *
  * @param byte          The 8-bit value (command or ASCII character).
- * @param register_sel  RS_COMMAND (0) for commands, RS_DATA (1) for characters.
+ * @param register_sel  RS_COMMAND (0) for instructions, RS_DATA (1) for data.
  */
-static void lcd_send_byte(uint8_t byte, uint8_t register_sel)
+static inline void lcd_send_byte(uint8_t byte, uint8_t register_sel)
 {
     LCD_Pin_RS(register_sel);
+
+    /* Place 8-bit value onto the LCD data bus (D0–D7). */
     lcd_write_data_pins(byte);
 
-    delay_before_enable();
-    LCD_Pin_E(1u);              /* rising edge latches data on the bus */
-    delay_enable_pulse();
-    LCD_Pin_E(0u);              /* falling edge completes the transfer */
+    /*
+     * Memory ordering barrier:
+     * Ensures all GPIO writes (RS + data lines) are fully committed
+     * to the peripheral bus before any subsequent instructions execute.
+     *
+     * Without this, the CPU could reorder or buffer writes, causing the
+     * LCD to latch incorrect or partially-updated data.
+     */
+    __DSB();
 
-    delay_before_enable();
-    delay_after_enable();
+    /*
+     * Instruction pipeline barrier:
+     * Flushes the CPU pipeline so that the enable strobe executes only
+     * after all prior memory operations are complete and globally visible.
+     */
+    __ISB();
+
+    /*
+     * Generate enable pulse:
+     * The rising edge latches RS + data into the LCD controller.
+     * The falling edge completes the write cycle.
+     */
+    LCD_Pin_E(1u);
+    LCD_Pin_E(0u);
 }
 
 /* =========================================================================
