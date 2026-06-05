@@ -30,7 +30,6 @@ void BOARD_InitBootPins(void);
 #define PCR_PE_pe1 0x01u            /*!<@brief Pull Enable: Enables */
 #define PORT2_PCR20_MUX_mux00 0x00u /*!<@brief Pin Multiplex Control: Alternative 0 (GPIO) */
 #define PORT2_PCR21_MUX_mux00 0x00u /*!<@brief Pin Multiplex Control: Alternative 0 (GPIO) */
-#define PORT2_PCR22_MUX_mux00 0x00u /*!<@brief Pin Multiplex Control: Alternative 0 (GPIO) */
 #define PORT4_PCR3_MUX_mux00 0x00u  /*!<@brief Pin Multiplex Control: Alternative 0 (GPIO) */
 #define PORT4_PCR6_MUX_mux00 0x00u  /*!<@brief Pin Multiplex Control: Alternative 0 (GPIO) */
 #define PORT4_PCR7_MUX_mux00 0x00u  /*!<@brief Pin Multiplex Control: Alternative 0 (GPIO) */
@@ -227,18 +226,18 @@ void BOARD_InitBootPins(void);
 #define BOARD_INITDEBUG_UARTPINS_KEY3_PIN_MASK (1U << 1U)      /*!<@brief PORT pin mask */
                                                                /* @} */
 
-/*! @name PORT2_22 (number 57), KEY4
+/*! @name PORT3_30 (number 71), KEY4
   @{ */
 
 /* Symbols to be used with GPIO driver */
-#define BOARD_INITDEBUG_UARTPINS_KEY4_GPIO GPIO2                /*!<@brief GPIO peripheral base pointer */
-#define BOARD_INITDEBUG_UARTPINS_KEY4_GPIO_PIN 22U              /*!<@brief GPIO pin number */
-#define BOARD_INITDEBUG_UARTPINS_KEY4_GPIO_PIN_MASK (1U << 22U) /*!<@brief GPIO pin mask */
+#define BOARD_INITDEBUG_UARTPINS_KEY5_GPIO GPIO3                /*!<@brief GPIO peripheral base pointer */
+#define BOARD_INITDEBUG_UARTPINS_KEY5_GPIO_PIN 30U              /*!<@brief GPIO pin number */
+#define BOARD_INITDEBUG_UARTPINS_KEY5_GPIO_PIN_MASK (1U << 30U) /*!<@brief GPIO pin mask */
 
 /* Symbols to be used with PORT driver */
-#define BOARD_INITDEBUG_UARTPINS_KEY4_PORT PORT2                /*!<@brief PORT peripheral base pointer */
-#define BOARD_INITDEBUG_UARTPINS_KEY4_PIN 22U                   /*!<@brief PORT pin number */
-#define BOARD_INITDEBUG_UARTPINS_KEY4_PIN_MASK (1U << 22U)      /*!<@brief PORT pin mask */
+#define BOARD_INITDEBUG_UARTPINS_KEY5_PORT PORT3                /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITDEBUG_UARTPINS_KEY5_PIN 30U                   /*!<@brief PORT pin number */
+#define BOARD_INITDEBUG_UARTPINS_KEY5_PIN_MASK (1U << 30U)      /*!<@brief PORT pin mask */
                                                                 /* @} */
 
 /*!

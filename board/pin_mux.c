@@ -32,6 +32,7 @@ pin_labels:
 - {pin_num: '87', pin_signal: P3_17/LPUART4_CTS_B/CT_INP9/FLEXIO0_D25/PWM1_B0/LCD_P45/SmartDMA_PIO17, label: KEY2, identifier: KEY2}
 - {pin_num: '105', pin_signal: P3_1/TRIG_IN1/LPUART3_TXD/CT_INP17/PWM0_B0/FLEXIO0_D9/PWM1_X1/LCD_P33/SmartDMA_PIO1/FREQME_CLK_OUT0, label: KEY3, identifier: KEY3}
 - {pin_num: '57', pin_signal: P2_22/CT2_MAT2/FLEXIO0_D30, label: KEY4, identifier: KEY4}
+- {pin_num: '71', pin_signal: P3_30/TRIG_OUT6/LPI2C3_SCLS/LPUART4_RTS_B/CT0_MAT2/FLEXIO0_D30/PWM1_A0/SmartDMA_PIO30/ADC1_A21, label: KEY4, identifier: KEY5}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -81,7 +82,8 @@ BOARD_InitDEBUG_UARTPins:
   - {pin_num: '87', peripheral: GPIO3, signal: 'GPIO, 17', pin_signal: P3_17/LPUART4_CTS_B/CT_INP9/FLEXIO0_D25/PWM1_B0/LCD_P45/SmartDMA_PIO17, direction: INPUT, pull_enable: enable}
   - {pin_num: '105', peripheral: GPIO3, signal: 'GPIO, 1', pin_signal: P3_1/TRIG_IN1/LPUART3_TXD/CT_INP17/PWM0_B0/FLEXIO0_D9/PWM1_X1/LCD_P33/SmartDMA_PIO1/FREQME_CLK_OUT0,
     direction: INPUT, pull_enable: enable}
-  - {pin_num: '57', peripheral: GPIO2, signal: 'GPIO, 22', pin_signal: P2_22/CT2_MAT2/FLEXIO0_D30, direction: INPUT, pull_enable: enable}
+  - {pin_num: '71', peripheral: GPIO3, signal: 'GPIO, 30', pin_signal: P3_30/TRIG_OUT6/LPI2C3_SCLS/LPUART4_RTS_B/CT0_MAT2/FLEXIO0_D30/PWM1_A0/SmartDMA_PIO30/ADC1_A21,
+    direction: INPUT, pull_enable: enable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -148,13 +150,6 @@ void BOARD_InitDEBUG_UARTPins(void)
     /* Initialize GPIO functionality on pin PIO2_21 (pin 56)  */
     GPIO_PinInit(BOARD_INITDEBUG_UARTPINS_D2_GPIO, BOARD_INITDEBUG_UARTPINS_D2_PIN, &D2_config);
 
-    gpio_pin_config_t KEY4_config = {
-        .pinDirection = kGPIO_DigitalInput,
-        .outputLogic = 0U
-    };
-    /* Initialize GPIO functionality on pin PIO2_22 (pin 57)  */
-    GPIO_PinInit(BOARD_INITDEBUG_UARTPINS_KEY4_GPIO, BOARD_INITDEBUG_UARTPINS_KEY4_PIN, &KEY4_config);
-
     gpio_pin_config_t KEY3_config = {
         .pinDirection = kGPIO_DigitalInput,
         .outputLogic = 0U
@@ -203,6 +198,13 @@ void BOARD_InitDEBUG_UARTPins(void)
     };
     /* Initialize GPIO functionality on pin PIO3_22 (pin 81)  */
     GPIO_PinInit(BOARD_INITDEBUG_UARTPINS_KEY1_GPIO, BOARD_INITDEBUG_UARTPINS_KEY1_PIN, &KEY1_config);
+
+    gpio_pin_config_t KEY5_config = {
+        .pinDirection = kGPIO_DigitalInput,
+        .outputLogic = 0U
+    };
+    /* Initialize GPIO functionality on pin PIO3_30 (pin 71)  */
+    GPIO_PinInit(BOARD_INITDEBUG_UARTPINS_KEY5_GPIO, BOARD_INITDEBUG_UARTPINS_KEY5_PIN, &KEY5_config);
 
     gpio_pin_config_t D3_config = {
         .pinDirection = kGPIO_DigitalOutput,
@@ -286,19 +288,6 @@ void BOARD_InitDEBUG_UARTPins(void)
 
                       /* Pin Multiplex Control: PORT2_21 (pin 56) is configured as P2_21. */
                       | PORT_PCR_MUX(PORT2_PCR21_MUX_mux00)
-
-                      /* Input Buffer Enable: Enables. */
-                      | PORT_PCR_IBE(PCR_IBE_ibe1));
-
-    PORT2->PCR[22] = ((PORT2->PCR[22] &
-                       /* Mask bits to zero which are setting */
-                       (~(PORT_PCR_PE_MASK | PORT_PCR_MUX_MASK | PORT_PCR_IBE_MASK)))
-
-                      /* Pull Enable: Enables. */
-                      | PORT_PCR_PE(PCR_PE_pe1)
-
-                      /* Pin Multiplex Control: PORT2_22 (pin 57) is configured as P2_22. */
-                      | PORT_PCR_MUX(PORT2_PCR22_MUX_mux00)
 
                       /* Input Buffer Enable: Enables. */
                       | PORT_PCR_IBE(PCR_IBE_ibe1));
@@ -398,6 +387,19 @@ void BOARD_InitDEBUG_UARTPins(void)
     PORT_SetPinMux(BOARD_INITDEBUG_UARTPINS_KEY1_PORT, BOARD_INITDEBUG_UARTPINS_KEY1_PIN, kPORT_MuxAlt0);
 
     PORT3->PCR[22] = ((PORT3->PCR[22] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_PE_MASK | PORT_PCR_IBE_MASK)))
+
+                      /* Pull Enable: Enables. */
+                      | PORT_PCR_PE(PCR_PE_pe1)
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT3_30 (pin 71) is configured as P3_30 */
+    PORT_SetPinMux(BOARD_INITDEBUG_UARTPINS_KEY5_PORT, BOARD_INITDEBUG_UARTPINS_KEY5_PIN, kPORT_MuxAlt0);
+
+    PORT3->PCR[30] = ((PORT3->PCR[30] &
                        /* Mask bits to zero which are setting */
                        (~(PORT_PCR_PE_MASK | PORT_PCR_IBE_MASK)))
 

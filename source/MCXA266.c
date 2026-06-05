@@ -19,6 +19,7 @@
 #include "task.h"
 
 #include "lcd.h"
+#include "keypad_lib.h"
 
 /* =========================================================================
  * HEAP SETUP (required by heap_5)
@@ -56,8 +57,16 @@ static volatile uint32_t uptime_milliseconds = 0u;
 
 void vApplicationTickHook(void)
 {
+    static uint32_t keypad_tick_counter = 0u;
     uptime_milliseconds++;
     LCD_Service1kHz();
+    
+    keypad_tick_counter++;
+    if (keypad_tick_counter >= 50u)
+    {
+        keypad_tick_counter = 0u;
+        ServiceKBD4X1();
+    }
 }
 
 /* =========================================================================
@@ -68,25 +77,44 @@ void vApplicationTickHook(void)
  * ======================================================================= */
 
 #define HEARTBEAT_INTERVAL_MS   1000u
-#define TASK_SLEEP_MS           100u
+#define TASK_SLEEP_MS           50u
 
 static void application_task(void *parameters)
 {
     (void)parameters;   /* unused */
 
-    uint32_t next_heartbeat_ms = HEARTBEAT_INTERVAL_MS;
-    uint32_t seconds_elapsed   = 0u;
-
     for (;;)
     {
         vTaskDelay(pdMS_TO_TICKS(TASK_SLEEP_MS));
 
-        uint32_t now_ms = uptime_milliseconds;
-        if (now_ms >= next_heartbeat_ms)
+        if (KBD_DATA)
         {
-            seconds_elapsed++;
-            next_heartbeat_ms += HEARTBEAT_INTERVAL_MS;
-           // PRINTF("running: %lu seconds\n", (unsigned long)seconds_elapsed);
+            if (KBD_DATA & KEY_ENTER)
+            {
+                LCD_PrintStr("Key: ENTER     ", LCD_ROW1_START);
+                PRINTF("Key pressed: ENTER\r\n");
+            }
+            else if (KBD_DATA & KEY_MU)
+            {
+                LCD_PrintStr("Key: MENU      ", LCD_ROW1_START);
+                PRINTF("Key pressed: MENU\r\n");
+            }
+            else if (KBD_DATA & KEY_DN)
+            {
+                LCD_PrintStr("Key: DOWN      ", LCD_ROW1_START);
+                PRINTF("Key pressed: DOWN\r\n");
+            }
+            else if (KBD_DATA & KEY_UP)
+            {
+                LCD_PrintStr("Key: UP        ", LCD_ROW1_START);
+                PRINTF("Key pressed: UP\r\n");
+            }
+            else if (KBD_DATA & KEY_ESC)
+            {
+                LCD_PrintStr("Key: ESCAPE    ", LCD_ROW1_START);
+                PRINTF("Key pressed: ESCAPE\r\n");
+            }
+            KBD_DATA = 0;
         }
     }
 }
